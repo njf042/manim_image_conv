@@ -37,6 +37,10 @@ def img_unNorm(img: Any) -> Any:
 
 class ConvAnim(MovingCameraScene):
     def construct(self) -> None:
+        
+        self.camera.background_color = "#ece6e2"
+        text_color=BLACK
+
         img_path = "../data/img.png"
         img, conved_img, kernel = convImage(img_path)
         img = img_unNorm(img[0])
@@ -79,7 +83,7 @@ class ConvAnim(MovingCameraScene):
             )
 
         # image name
-        img_name = Tex("Input Image", font_size=18)
+        img_name = Tex("Input Image", font_size=18, color=text_color)
         img_name.set_color(WHITE)
         img_name.shift(img_obj.get_edge_center(UP) + 0.1 * UP)
 
@@ -131,7 +135,7 @@ class ConvAnim(MovingCameraScene):
         kernel_text_on_img = VGroup()
         for i in range(kernel_size * kernel_size):
             tex = f"w_{{{i}}}"
-            text = MathTex(tex, font_size=12)
+            text = MathTex(tex, font_size=12, color=text_color)
             text.set_color(BLACK if kernel[i // kernel_size][i % kernel_size] > 128 else WHITE)
             text.shift(
                 kernel_square.get_corner(UP + LEFT) + img_obj_size / img_size / 2 * (DOWN + RIGHT)
@@ -146,7 +150,7 @@ class ConvAnim(MovingCameraScene):
         kernel_text = VGroup()
         for i in range(kernel_size * kernel_size):
             tex = f"x_{{{i}}}"
-            text = MathTex(tex, font_size=12)
+            text = MathTex(tex, font_size=12, color=text_color)
             text.set_color(BLACK if img[i // img_size][i % img_size] > 128 else WHITE)
             text.shift(
                 kernel_square_on_img.get_corner(UP + LEFT)
@@ -175,7 +179,7 @@ class ConvAnim(MovingCameraScene):
         )
 
         # conved image name
-        conved_name = Tex("Conved Image", font_size=18)
+        conved_name = Tex("Conved Image", font_size=18, color=text_color)
         conved_name.set_color(WHITE)
 
         # conved pixels
@@ -193,7 +197,7 @@ class ConvAnim(MovingCameraScene):
 
         # conv equation
         tex = r"x_0w_0+x_1w_1+x_2w_2+\\x_3w_3+x_4w_4+x_5w_5+\\x_6w_6+x_7w_7+x_8w_8="
-        conv_eq_text = MathTex(tex, font_size=12)
+        conv_eq_text = MathTex(tex, font_size=12, color=text_color)
         conv_eq_text.shift(
             conved_pixel_list[0][0].get_edge_center(UP) + img_obj_size / img_size * 2 * UP
         )
@@ -272,7 +276,8 @@ class ConvAnim(MovingCameraScene):
 
         self.play(Create(kernel_detail1), Create(kernel_detail2))
 
-        for i in range(conved_img[0][0].shape[0]):
+        #for i in range(conved_img[0][0].shape[0]):
+        for i in range(5):
             if i != 0:
                 self.play(
                     kernel_square.animate.shift(
@@ -296,7 +301,8 @@ class ConvAnim(MovingCameraScene):
                     conved_pixel_list[(i - 1)][0].get_center() + img_obj_size / img_size * DOWN
                 )
                 self.add(conved_pixel_list[i][0])
-            for j in range(1, conved_img[0][0].shape[1]):
+            #for j in range(1, conved_img[0][0].shape[1]):
+            for j in range(5):
                 self.play(
                     kernel_square.animate.shift(img_obj_size / img_size * RIGHT),
                     kernel_lines.animate.shift(img_obj_size / img_size * RIGHT),
